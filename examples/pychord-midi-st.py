@@ -8,6 +8,7 @@ import sys
 
 from pychord import Chord
 
+output_file="chord.mid"  # default file name
 
 def create_midi(chords):
     midi_data = pretty_midi.PrettyMIDI()
@@ -20,7 +21,7 @@ def create_midi(chords):
             note = pretty_midi.Note(velocity=100, pitch=note_number, start=n * length, end=(n + 1) * length)
             piano.notes.append(note)
     midi_data.instruments.append(piano)
-    midi_data.write('chord.mid')
+    midi_data.write("chord.mid")
 
 def create_midi_vary_time(chords, lengths):
     midi_data = pretty_midi.PrettyMIDI()
@@ -37,7 +38,7 @@ def create_midi_vary_time(chords, lengths):
             piano.notes.append(note)
         current_position = current_position + lengths[n]
     midi_data.instruments.append(piano)
-    midi_data.write('chord.mid')
+    midi_data.write(output_file)
 
 # input format example: "C:1 Dm7:.5 G:.5 C:1"
 def parse_chords_barlen(chords_n_bars):
@@ -76,15 +77,26 @@ def test_chords_n_bars_main():
     create_midi_vary_time(chords, lengths)
 
 def read_args():
-    user_inputs = ''
-    if (len(sys.argv)>0):
-        user_inputs = sys.argv[1]
-    return user_inputs
+    chords__inputs = ''
+    output_fname = ''
+    if (len(sys.argv)>1):
+        chords_inputs = sys.argv[1]
+    if (len(sys.argv)>2):
+        output_fname = sys.argv[2]
+    return chords_inputs, output_fname
+
+# Usage: pychord-midi-st.py "C:1 Am:0.5 .." my_output_midi_file.mid
 
 def main():
-    chords_n_bars = read_args()
+    chords_n_bars, output_fname = read_args()
+    print (chords_n_bars, output_fname)
     if (chords_n_bars == ''):
         print('No input provided, pass e.g., "C:0.5 Dm7:.5 G:.5 C:1"')
+    if (output_fname != ''):
+        global output_file
+        output_file = output_fname
+        print (output_file)
+    
     chords_str, lengths = parse_chords_barlen(chords_n_bars)
     print(chords_str)
     print(lengths)
