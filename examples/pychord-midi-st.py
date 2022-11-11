@@ -4,6 +4,7 @@
 
 
 import pretty_midi
+import sys
 
 from pychord import Chord
 
@@ -59,7 +60,7 @@ def test_main():
 
     create_midi_vary_time(chords, lengths)
 
-def main():
+def test_chords_n_bars_main():
     #chords_str = ["C", "Dm7", "G", "C"]
     #lengths = [1, 1.5, 0.5, 1]
     chords_n_bars = "C:0.5 Dm7:.5 G:.5 C:1"
@@ -74,7 +75,28 @@ def main():
 
     create_midi_vary_time(chords, lengths)
 
+def read_args():
+    user_inputs = ''
+    if (len(sys.argv)>0):
+        user_inputs = sys.argv[1]
+    return user_inputs
+
+def main():
+    chords_n_bars = read_args()
+    if (chords_n_bars == ''):
+        print('No input provided, pass e.g., "C:0.5 Dm7:.5 G:.5 C:1"')
+    chords_str, lengths = parse_chords_barlen(chords_n_bars)
+    print(chords_str)
+    print(lengths)
+
+    chords = [Chord(c) for c in chords_str]
+    for c in chords_str:
+        print (Chord(c))
+
+    create_midi_vary_time(chords, lengths)
+    
 
 if __name__ == '__main__':
     main()
     #test_main()
+    
