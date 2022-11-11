@@ -42,7 +42,7 @@ def create_midi_vary_time(chords, lengths):
 
 # input format example: "C:1 Dm7:.5 G:.5 C:1"
 def parse_chords_barlen(chords_n_bars):
-    split_pairs = chords_n_bars.split()
+    split_pairs = chords_n_bars.split("|")
     chords = []
     lengths = []
     for chord_n_bar in split_pairs:
