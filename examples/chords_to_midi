@@ -1,0 +1,6 @@
+input_chords_n_bars=$1
+
+python3 <add path>/pychord-midi-st.py $@
+
+
+
